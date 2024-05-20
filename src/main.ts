@@ -37,8 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
   modal.open();
 
   modal.subscribeEvents((event) => {
-    console.log('event', event.data.event);
-
     let observer: ResizeObserver | undefined;
     switch (event.data.event) {
       case 'MODAL_OPEN':
