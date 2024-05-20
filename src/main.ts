@@ -36,10 +36,22 @@ const modal = createWeb3Modal({
 document.addEventListener('DOMContentLoaded', () => {
   modal.open();
 
+  modal.subscribeEvents((event) => {
+    console.log('event', event.data.event);
 
-  modal.subscribeState((state) => {
-    if (!state.open) {
-      window.parent.postMessage({ type: 'connect-deplan-modal-close' }, '*');
+    let observer: ResizeObserver | undefined;
+    switch (event.data.event) {
+      case 'MODAL_OPEN':
+        setTimeout(() => {
+          observer = subscribeForModalZise();
+        }, 300);
+        break;
+      case 'MODAL_CLOSE':
+        window.parent.postMessage({ type: 'connect-deplan-modal-close' }, '*');
+        observer?.disconnect();
+        break;
+      default:
+        break;
     }
   });
 
@@ -47,12 +59,26 @@ document.addEventListener('DOMContentLoaded', () => {
     window.parent.postMessage({ type: 'adress-update', data: provider.address }, '*');
   });
 
-  setTimeout(() => {
-    const wuiCard = getWuiCardElement();
-    if (wuiCard) {
-      observeConnectModalSize(wuiCard);
+  window.addEventListener('message', (event) => {
+    switch (event.data.type) {
+      case 'connect-deplan-wallet':
+        modal.open();
+        break;
+      case 'connect-deplan-modal-open':
+        modal.open();
+        break;
+      case 'connect-deplan-modal-close':
+        modal.close();
+        break;
+      default:
+        break;
     }
-
-  }, 1000);
-
+  });
 });
+
+const subscribeForModalZise = () => {
+  const wuiCard = getWuiCardElement();
+  if (wuiCard) {
+    return observeConnectModalSize(wuiCard);
+  }
+}

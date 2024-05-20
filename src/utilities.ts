@@ -17,6 +17,8 @@ export const observeConnectModalSize = (elementToObserve: any) => {
     });
 
     resizeObserver.observe(elementToObserve);
+
+    return resizeObserver;
 }
 
 export const getWuiCardElement = () => {
