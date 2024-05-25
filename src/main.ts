@@ -37,7 +37,7 @@ const modal = createWeb3Modal({
 const onKeySubscribtion = (value: string | undefined) => {
   if(!value) return;
 
-  window.open(`deplan://wc?uri=${value}`, '_blank');
+  window.open(`deplan://wc?uri=${value}`);
 }
 
 ConnectionController.subscribeKey('wcUri', onKeySubscribtion);
