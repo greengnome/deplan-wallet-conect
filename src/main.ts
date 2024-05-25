@@ -1,6 +1,7 @@
 
 import { solana } from '@web3modal/solana/chains'
 import { createWeb3Modal, defaultSolanaConfig } from '@web3modal/solana';
+import { ConnectionController } from '@web3modal/core';
 
 import { getWuiCardElement, observeConnectModalSize } from './utilities';
 import deplanWalletConfig from './deplan-wallet-config';
@@ -33,10 +34,18 @@ const modal = createWeb3Modal({
 })
 
 
+const onKeySubscribtion = (value: string | undefined) => {
+  if(!value) return;
+
+  window.open(`deplan://wc?uri=${value}`, '_blank');
+}
+
+ConnectionController.subscribeKey('wcUri', onKeySubscribtion);
+
 document.addEventListener('DOMContentLoaded', () => {
   modal.open();
 
-  modal.subscribeEvents((event) => {
+  modal.subscribeEvents((event) => {    
     let observer: ResizeObserver | undefined;
     switch (event.data.event) {
       case 'MODAL_OPEN':
