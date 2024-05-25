@@ -7,5 +7,8 @@ export default defineConfig({
   define: {
     'process.env': {},
     global: {}
+  },
+  server: {
+    port: 5174,
   }
 })

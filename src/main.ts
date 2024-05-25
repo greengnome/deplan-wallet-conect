@@ -37,7 +37,8 @@ const modal = createWeb3Modal({
 const onKeySubscribtion = (value: string | undefined) => {
   if(!value) return;
 
-  window.parent.postMessage({ type: 'wc-uri-received', data: `deplan://wc?uri=${value}` }, '*');
+  const encodedUrl = encodeURIComponent(value);
+  window.parent.postMessage({ type: 'wc-uri-received', data: `deplan://wc?uri=${encodedUrl}` }, '*');
 
 }
 
